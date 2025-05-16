@@ -1,0 +1,7 @@
+{
+  "name": "pelicula",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
