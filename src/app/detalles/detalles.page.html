@@ -1,0 +1,36 @@
+<ion-content class="custom-content" [fullscreen]="true">
+  <div class="header-image" *ngIf="movie?.backdrop_path">
+    <img [src]="'https://image.tmdb.org/t/p/w780' + movie.backdrop_path" alt="Backdrop" />
+    <ion-button fill="clear" class="back-button" routerLink="/home">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+    </ion-button>
+  </div>
+
+  <div class="content-body" *ngIf="movie">
+    <h1 class="title">{{ movie.original_title }}</h1>
+    <p class="subtitle">{{ movie.release_date }} · {{ movie.runtime }} min</p>
+
+    <p class="overview">{{ movie.overview }}</p>
+
+    <div class="info-section">
+      <h2>🎬 Géneros</h2>
+      <div class="info-tags">
+        <span *ngFor="let g of movie.genres">{{ g.name }}</span>
+      </div>
+
+      <h2>🗣️ Idiomas</h2>
+      <div class="info-tags">
+        <span *ngFor="let lang of movie.spoken_languages">{{ lang.english_name }}</span>
+      </div>
+
+      <h2>💰 Presupuesto</h2>
+      <p>${{ movie.budget | number }}</p>
+
+      <h2>💵 Ingresos</h2>
+      <p>${{ movie.revenue | number }}</p>
+
+      <h2>🌐 Página oficial</h2>
+      <a *ngIf="movie.homepage" [href]="movie.homepage" target="_blank">{{ movie.homepage }}</a>
+    </div>
+  </div>
+</ion-content>

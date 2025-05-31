@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>search</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">search</ion-title>
+    </ion-toolbar>
+    <ion-toolbar>
+    <ion-searchbar  [(ngModel)]="searchTerm"
+        (ionChange)="searchMovies()"
+        placeholder="Buscar película"></ion-searchbar>
+  </ion-toolbar>
+  </ion-header>
+  <div id="container">
+    @for (item of searchResults; track $index) {
+    <ion-card [routerLink]="['/detalles', item.id]">
+ <img alt="{{item.title}}" [src]="item.poster_path? 'https://image.tmdb.org/t/p/w500' + item.poster_path : 'assets/img/images.jpeg'" />
+  <ion-card-header>
+    <ion-card-title>{{item.title}}</ion-card-title>
+    <ion-card-subtitle>{{item.release_date}}</ion-card-subtitle>
+  </ion-card-header>
+
+  <ion-card-content>
+    {{item.overview}}
+  </ion-card-content>
+</ion-card>
+}
+ </div>
+</ion-content>
