@@ -52,7 +52,7 @@
   margin-bottom: 20px;
   
   .custom-input {
-    --background: rgba(255, 255, 255, 0.95);
+    --background: rgba(57, 56, 56, 0.95);
     --border-radius: 12px;
     --padding-start: 16px;
     --padding-end: 16px;
@@ -62,24 +62,24 @@
     backdrop-filter: blur(10px);
     
     ion-input {
-      --placeholder-color: #8a8a8a;
-      --color: #333333;
+      --placeholder-color: #ede9e9;
+      --color: #f6f4f4;
       font-size: 16px;
     }
     
     .input-icon {
-      color: #3a3b3d;
+      color: #b2b3b3;
       margin-right: 12px;
       font-size: 20px;
     }
     
     .toggle-password {
-      color: #8a8a8a;
+      color: #ece8e8;
       cursor: pointer;
       font-size: 20px;
       
       &:hover {
-        color: #3a3b3d;
+        color: #ece8e8;
       }
     }
   }

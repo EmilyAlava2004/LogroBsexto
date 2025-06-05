@@ -13,8 +13,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'home',
-        loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-        
+        loadComponent: () => import('./home/home.page').then((m) => m.HomePage)
       },
       {
         path: 'premiere',
@@ -37,5 +36,9 @@ export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () => import('./login/login.page').then( m => m.LoginPage)
+  },
+  {
+    path: 'registro',
+    loadComponent: () => import('./registro/registro.page').then( m => m.RegistroPage)
   },
 ]

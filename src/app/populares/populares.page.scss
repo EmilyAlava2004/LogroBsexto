@@ -1,0 +1,204 @@
+.popular-content {
+  --background: #0d1117;
+  --color: #ffffff;
+}
+
+.search-filter-section {
+  padding: 16px;
+  background: #161b22;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  ion-searchbar {
+    --background: #21262d;
+    --color: #ffffff;
+    --placeholder-color: rgba(255, 255, 255, 0.6);
+    --icon-color: #3b82f6;
+    --clear-button-color: #3b82f6;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+
+  .filter-controls {
+    ion-select {
+      --background: #21262d;
+      --color: #ffffff;
+      --placeholder-color: rgba(255, 255, 255, 0.6);
+      border-radius: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.movies-container {
+  padding: 16px;
+
+  &.grid-view .movies-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+
+    .movie-card {
+      cursor: pointer;
+      transition: transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      .movie-poster {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 12px;
+        aspect-ratio: 2/3;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .movie-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+
+          ion-button {
+            --border-radius: 50%;
+            width: 48px;
+            height: 48px;
+          }
+        }
+
+        &:hover .movie-overlay {
+          opacity: 1;
+        }
+
+        .movie-rating {
+          position: absolute;
+          top: 8px;
+          right: 8px;
+          background: rgba(0, 0, 0, 0.8);
+          border-radius: 12px;
+          padding: 4px 8px;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+
+          ion-icon {
+            font-size: 12px;
+          }
+
+          span {
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+          }
+        }
+      }
+
+      .movie-info {
+        h3 {
+          font-size: 14px;
+          font-weight: 600;
+          margin: 0 0 4px 0;
+          color: white;
+          line-height: 1.3;
+        }
+
+        .movie-year {
+          font-size: 12px;
+          color: #3b82f6;
+          margin: 0 0 2px 0;
+          font-weight: 500;
+        }
+
+        .movie-genre {
+          font-size: 11px;
+          color: rgba(255, 255, 255, 0.6);
+          margin: 0;
+          line-height: 1.2;
+        }
+      }
+    }
+  }
+
+  &.list-view .movies-list {
+    .movie-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: #1f2937;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      &:hover {
+        background: #374151;
+        border-color: #3b82f6;
+        transform: translateX(4px);
+      }
+
+      .movie-poster-small {
+        flex-shrink: 0;
+        width: 60px;
+        height: 90px;
+        border-radius: 8px;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .movie-details {
+        flex: 1;
+
+        h3 {
+          font-size: 16px;
+          font-weight: 600;
+          margin: 0 0 4px 0;
+          color: white;
+        }
+
+        .movie-meta {
+          font-size: 14px;
+          color: #3b82f6;
+          margin: 0 0 8px 0;
+          font-weight: 500;
+        }
+
+        .movie-overview {
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.7);
+          margin: 0 0 8px 0;
+          line-height: 1.4;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .movie-rating-inline {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+      }
+    }
+  }
+}

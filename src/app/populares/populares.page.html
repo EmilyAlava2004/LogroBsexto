@@ -1,13 +1,101 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>populares</ion-title>
+  <ion-toolbar color="dark">
+    <ion-title>Películas Populares</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="toggleViewMode()">
+        <ion-icon [name]="viewMode === 'grid' ? 'list' : 'grid'" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">populares</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="popular-content">
+  <!-- Refresh -->
+  <ion-refresher slot="fixed" (ionRefresh)="refreshData($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+    <p>Cargando películas populares...</p>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <!-- Search and Filter Section -->
+    <div class="search-filter-section">
+      <ion-searchbar 
+        placeholder="Buscar películas..."
+        (ionInput)="searchMovies($event)"
+        show-clear-button="focus">
+      </ion-searchbar>
+      
+      <div class="filter-controls">
+        <ion-select 
+          interface="popover" 
+          placeholder="Ordenar por"
+          [value]="sortBy"
+          (ionChange)="changeSortBy($event)">
+          <ion-select-option value="rating">Calificación</ion-select-option>
+          <ion-select-option value="release_date">Fecha de Estreno</ion-select-option>
+          <ion-select-option value="title">Título</ion-select-option>
+        </ion-select>
+      </div>
+    </div>
+
+    <!-- Movies Grid View -->
+    <div class="movies-container" [class.list-view]="viewMode === 'list'" [class.grid-view]="viewMode === 'grid'">
+      
+      <!-- Grid View -->
+      <div class="movies-grid" *ngIf="viewMode === 'grid'">
+        <div class="movie-card" *ngFor="let movie of filteredMovies" (click)="viewMovieDetail(movie.id)">
+          <div class="movie-poster">
+            <img [src]="getImageUrl(movie.poster_path)" [alt]="movie.title">
+            <div class="movie-overlay">
+              <ion-button fill="clear" color="light" size="small">
+                <ion-icon name="play" slot="icon-only"></ion-icon>
+              </ion-button>
+            </div>
+            <div class="movie-rating">
+              <ion-icon name="star" color="warning"></ion-icon>
+              <span>{{ movie.vote_average | number:'1.1-1' }}</span>
+            </div>
+          </div>
+          <div class="movie-info">
+            <h3>{{ movie.title }}</h3>
+            <p class="movie-year">{{ movie.release_date | date:'yyyy' }}</p>
+            <p class="movie-genre">{{ getGenreText(movie.genre_ids) }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- List View -->
+      <div class="movies-list" *ngIf="viewMode === 'list'">
+        <div class="movie-item" *ngFor="let movie of filteredMovies" (click)="viewMovieDetail(movie.id)">
+          <div class="movie-poster-small">
+            <img [src]="getImageUrl(movie.poster_path)" [alt]="movie.title">
+          </div>
+          <div class="movie-details">
+            <h3>{{ movie.title }}</h3>
+            <p class="movie-meta">{{ movie.release_date | date:'yyyy' }} • {{ getGenreText(movie.genre_ids) }}</p>
+            <p class="movie-overview">{{ movie.overview }}</p>
+            <div class="movie-rating-inline">
+              <ion-icon name="star" color="warning"></ion-icon>
+              <span>{{ movie.vote_average | number:'1.1-1' }}</span>
+            </div>
+          </div>
+          <ion-button fill="clear" color="primary">
+            <ion-icon name="chevron-forward" slot="icon-only"></ion-icon>
+          </ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="filteredMovies.length === 0">
+    <ion-icon name="film-outline" class="empty-icon"></ion-icon>
+    <h3>No se encontraron películas</h3>
+    <p>Intenta con otros términos de búsqueda</p>
+  </div>
 </ion-content>

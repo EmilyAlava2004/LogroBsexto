@@ -15,6 +15,16 @@ private http = inject(HttpClient);
 getMovieDetails(movieId: string) {
   return this.http.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=790bcff984e23cec4b17963625a97209&language=en-US`);
 }
-
+getMoviespopular() {
+  return this.http.get('https://api.themoviedb.org/3/movie/popular?api_key=790bcff984e23cec4b17963625a97209&language=en-US&page=1');
 }
-
+getMoviesTopRated() {
+  return this.http.get('https://api.themoviedb.org/3/movie/top_rated?api_key=790bcff984e23cec4b17963625a97209&language=en-US&page=1');
+}
+getMoviesFavorites() {
+  return this.http.get('https://api.themoviedb.org/3/movie/popular?api_key=790bcff984e23cec4b17963625a97209&language=en-US&page=1');
+}
+getTopRatedMovies() {
+  return this.http.get('https://api.themoviedb.org/3/movie/top_rated?api_key=790bcff984e23cec4b17963625a97209&language=en-US&page=1');
+}
+}

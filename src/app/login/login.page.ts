@@ -1,20 +1,23 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonLabel, IonItem } from '@ionic/angular/standalone';
+import { IonContent, IonCheckbox, IonHeader, IonTitle, IonToolbar, IonButton, IonIcon, IonLabel, IonItem } from '@ionic/angular/standalone';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController, ToastController } from '@ionic/angular';
 import { ViewChild } from '@angular/core';
 import { IonInput } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logoFacebook, logoGoogle, lockClosedOutline, mailOutline, eyeOffOutline, logInOutline } from 'ionicons/icons'; // Importar icono de Facebook
-import { AuthService } from '../servicios/autch.service';
+import { logoFacebook, logoGoogle,lockClosedOutline, mailOutline, eyeOffOutline, logInOutline, personCircleOutline } from 'ionicons/icons'; // Importar icono de Facebook
+import { AuthService } from '../servicios/auth.service'; // Asegúrate de tener un servicio de autenticación
+
+import { HttpClientModule } from '@angular/common/http';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonItem, IonLabel, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonItem,HttpClientModule,IonInput, IonLabel,IonCheckbox, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
 })
 export class LoginPage {
   email: string = '';
@@ -23,13 +26,13 @@ export class LoginPage {
   rememberMe: boolean = false;
 
   constructor(
-    private authService: AuthService,
     private router: Router,
     private alertController: AlertController,
     private loadingController: LoadingController,
     private toastController: ToastController,
+    private authService: AuthService // Asegúrate de tener un servicio de autenticación
   ) {
-     addIcons({logoFacebook,logoGoogle, lockClosedOutline, mailOutline, eyeOffOutline, logInOutline}); // Añadir iconos de Ionicons
+     addIcons({logoFacebook,logoGoogle, lockClosedOutline, mailOutline, eyeOffOutline, logInOutline, personCircleOutline}); // Añadir iconos de Ionicons
   }
  @ViewChild('passwordInput', { static: false }) passwordInput!: IonInput;
 
@@ -42,9 +45,7 @@ export class LoginPage {
  
   // Función principal de login
   async onLogin() {
-  if (!this.validateForm()) {
-    return;
-  }
+  if (!this.validateForm()) return;
 
   const loading = await this.loadingController.create({
     message: 'Iniciando sesión...',
@@ -53,24 +54,21 @@ export class LoginPage {
   await loading.present();
 
   try {
-    // Llamada real al backend
-    const response = await this.authService.login(this.email, this.password).toPromise();
+    const result = await this.authService.authenticateUser(this.email, this.password);
 
-    if (response && response.token) {
-      this.authService.saveToken(response.token); // guarda el token en localStorage
-
+    if (result.success) {
       await this.showToast('¡Bienvenido! Sesión iniciada correctamente', 'success');
 
       if (this.rememberMe) {
         this.saveUserCredentials();
       }
 
-      this.router.navigate(['/tabs']);
+      this.router.navigate(['/tabs/home']);
     } else {
-      await this.showAlert('Error de autenticación', 'Credenciales incorrectas. Por favor, verifica tu email y contraseña.');
+      await this.showAlert('Error de autenticación', result.message || 'Credenciales incorrectas');
     }
-  } catch (error: any) {
-    await this.showAlert('Error', error.error?.message || 'Error en el inicio de sesión.');
+  } catch (error) {
+    await this.showAlert('Error', 'Ha ocurrido un error inesperado');
     console.error('Login error:', error);
   } finally {
     await loading.dismiss();
@@ -105,15 +103,19 @@ export class LoginPage {
 
   // Simular autenticación (reemplazar con tu lógica real)
   private async authenticateUser(email: string, password: string): Promise<boolean> {
-    // Simular delay de red
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    // Aquí implementarías la llamada real a tu API
-    // return this.authService.login(email, password);
-    
-    // Por ahora, simular éxito si el email contiene "@"
-    return email.includes('@') && password.length >= 6;
+  try {
+    const response = await this.authService.authenticateUser(email, password);
+    console.log('Respuesta del backend:', response);
+
+    // Aquí puedes guardar el token si lo devuelve tu backend
+    // localStorage.setItem('token', response.token);
+
+    return true;
+  } catch (error) {
+    console.error('Error en login:', error);
+    return false;
   }
+}
 
   // Guardar credenciales para recordar sesión
   private saveUserCredentials() {
@@ -233,4 +235,5 @@ export class LoginPage {
     });
     await alert.present();
   }
+  
 }
