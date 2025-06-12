@@ -27,6 +27,7 @@ export class RegistroPage  {
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
   acceptTerms: boolean = false;
+  
   constructor(
      private router: Router,
     private alertController: AlertController,
@@ -63,7 +64,7 @@ export class RegistroPage  {
     this.confirmPasswordInput.type = newType;
   }
 
-  // Función principal de registro
+  // ✅ FUNCIÓN PRINCIPAL DE REGISTRO MEJORADA
   async onSignup() {
     if (!this.validateForm()) return;
 
@@ -80,17 +81,54 @@ export class RegistroPage  {
         password: this.password
       });
 
-      // ✅ Adaptado al backend actual
+      console.log('Resultado del registro:', result);
+
+      // ✅ VERIFICAR REGISTRO EXITOSO Y GUARDAR DATOS AUTOMÁTICAMENTE
       if (result && result.users && result.token) {
-        await this.showToast('¡Cuenta creada exitosamente!', 'success');
-        await this.showWelcomeAlert(result.users.user);
+        // 🔐 GUARDAR TOKEN DE AUTENTICACIÓN
+        localStorage.setItem('token', result.token);
+        console.log('Token guardado:', result.token);
+
+        // 👤 GUARDAR EMAIL DEL USUARIO
+        localStorage.setItem('userEmail', this.email);
+        console.log('Email guardado:', this.email);
+
+        // 🆔 GUARDAR ID DEL USUARIO (si está disponible)
+        if (result.users.id) {
+          localStorage.setItem('id', result.users.id.toString());
+          console.log('ID guardado:', result.users.id);
+        } else if (result.id) {
+          localStorage.setItem('id', result.id.toString());
+          console.log('ID guardado desde result.id:', result.id);
+        }
+
+        // 📝 GUARDAR NOMBRE DE USUARIO (opcional, útil para comentarios)
+        localStorage.setItem('userName', result.users.user || this.user);
+        console.log('Nombre de usuario guardado:', result.users.user || this.user);
+
+        // ✅ VERIFICAR QUE TODOS LOS DATOS SE GUARDARON CORRECTAMENTE
+        console.log('=== VERIFICACIÓN DE DATOS GUARDADOS ===');
+        console.log('Token:', localStorage.getItem('token'));
+        console.log('Email:', localStorage.getItem('userEmail'));
+        console.log('ID:', localStorage.getItem('id'));
+        console.log('Nombre:', localStorage.getItem('userName'));
+
+        // 🎉 MOSTRAR MENSAJE DE ÉXITO
+        await this.showToast('¡Cuenta creada exitosamente! Ya puedes agregar comentarios.', 'success');
+        
+        // 👋 MOSTRAR ALERTA DE BIENVENIDA
+        await this.showWelcomeAlert(result.users.user || this.user);
+        
+        // 🚀 REDIRIGIR A HOME (usuario ya autenticado automáticamente)
         this.router.navigate(['/tabs/home']);
+        
       } else {
-        await this.showAlert('Error de registro', result.message || 'Error al crear la cuenta');
+        // ❌ ERROR EN EL REGISTRO
+        await this.showAlert('Error de registro', result?.message || 'Error al crear la cuenta');
       }
     } catch (error) {
       console.error('Signup error:', error);
-      await this.showAlert('Error', 'Ha ocurrido un error inesperado');
+      await this.showAlert('Error', 'Ha ocurrido un error inesperado al crear la cuenta');
     } finally {
       await loading.dismiss();
     }
@@ -135,12 +173,17 @@ export class RegistroPage  {
     return emailRegex.test(email);
   }
 
-  // ✅ Ahora recibe el nombre como argumento
+  // ✅ MENSAJE DE BIENVENIDA MEJORADO
   private async showWelcomeAlert(nombre: string) {
     const alert = await this.alertController.create({
       header: '¡Bienvenido!',
-      message: `Hola ${nombre}, tu cuenta ha sido creada exitosamente. Ahora puedes iniciar sesión.`,
-      buttons: ['Continuar']
+      message: `Hola ${nombre}, tu cuenta ha sido creada exitosamente. Ya estás autenticado y puedes comenzar a usar la aplicación.`,
+      buttons: [
+        {
+          text: 'Comenzar',
+          cssClass: 'primary'
+        }
+      ]
     });
 
     await alert.present();
@@ -208,7 +251,7 @@ export class RegistroPage  {
   private async showToast(message: string, color: string = 'primary') {
     const toast = await this.toastController.create({
       message,
-      duration: 3000,
+      duration: 4000, // Un poco más de tiempo para leer el mensaje
       position: 'top',
       color,
       buttons: [
