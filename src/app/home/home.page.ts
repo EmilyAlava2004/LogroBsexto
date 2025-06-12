@@ -4,7 +4,15 @@ import { IonicModule} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { MovesService } from '../servicios/moves.service';
 import{ FormsModule } from '@angular/forms';
-
+import { addIcons } from 'ionicons';
+import { 
+  personCircleOutline,
+  trendingUp,
+  film,
+  star,
+  play,
+  starOutline
+} from 'ionicons/icons';
 @Component({
   selector: 'app-home',
   templateUrl: './home.page.html',
@@ -18,7 +26,7 @@ export class HomePage implements OnInit {
   topRatedMovies: any[] = [];
   popularMovies: any[] = [];
   isLoading = true;
-
+  username !: string;
   categories = [
     { name: 'Populares', icon: 'trending-up', route: '/tabs/populares' },
     { name: 'En Cartelera', icon: 'film', route: '/tabs/premiere' },
@@ -27,10 +35,19 @@ export class HomePage implements OnInit {
     private router: Router,
     private moviesService: MovesService
   ) { 
+    addIcons({
+      'trending-up': trendingUp,
+      'film': film,
+      'star': star,
+      'star-outline': starOutline,
+      'play': play,
+      'person-circle-outline': personCircleOutline,
+    });
   }
 
   ngOnInit() {
     this.loadHomeData();
+    this.username = localStorage.getItem('userEmail') || '';
   }
 
   loadHomeData() {

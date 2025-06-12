@@ -7,9 +7,15 @@ import { AlertController, LoadingController, ToastController } from '@ionic/angu
 import { ViewChild } from '@angular/core';
 import { IonInput } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { logoFacebook, logoGoogle,lockClosedOutline, mailOutline, eyeOffOutline, logInOutline, personCircleOutline } from 'ionicons/icons'; // Importar icono de Facebook
+import {  logoFacebook, 
+  logoGoogle,
+  lockClosedOutline, 
+  mailOutline, 
+  eyeOffOutline, 
+  eyeOutline,  // ← AGREGAR ESTE ICONO
+  logInOutline, 
+  personCircleOutline  } from 'ionicons/icons'; // Importar icono de Facebook
 import { AuthService } from '../servicios/auth.service'; // Asegúrate de tener un servicio de autenticación
-
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -17,7 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonItem,HttpClientModule,IonInput, IonLabel,IonCheckbox, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule]
+  imports: [IonItem,HttpClientModule,IonInput, IonLabel,IonCheckbox, IonIcon, IonButton, IonContent, IonHeader, IonTitle, IonToolbar, CommonModule, FormsModule,]
 })
 export class LoginPage {
   email: string = '';
@@ -32,7 +38,14 @@ export class LoginPage {
     private toastController: ToastController,
     private authService: AuthService // Asegúrate de tener un servicio de autenticación
   ) {
-     addIcons({logoFacebook,logoGoogle, lockClosedOutline, mailOutline, eyeOffOutline, logInOutline, personCircleOutline}); // Añadir iconos de Ionicons
+     addIcons({'logo-facebook': logoFacebook,
+      'logo-google': logoGoogle,
+      'lock-closed-outline': lockClosedOutline,
+      'mail-outline': mailOutline,
+      'eye-off-outline': eyeOffOutline,
+      'eye-outline': eyeOutline,  // ← IMPORTANTE: Registrar ambos iconos del ojo
+      'log-in-outline': logInOutline,
+      'person-circle-outline': personCircleOutline}); // Añadir iconos de Ionicons
   }
  @ViewChild('passwordInput', { static: false }) passwordInput!: IonInput;
 
@@ -44,7 +57,8 @@ export class LoginPage {
  // Alternar visibilidad de contraseña
  
   // Función principal de login
-  async onLogin() {
+  // 🔧 MÉTODO CORREGIDO para el login
+async onLogin() {
   if (!this.validateForm()) return;
 
   const loading = await this.loadingController.create({
@@ -62,7 +76,30 @@ export class LoginPage {
       if (this.rememberMe) {
         this.saveUserCredentials();
       }
-
+      
+      // ✅ GUARDAR TOKEN
+      if (result.token) {
+        localStorage.setItem('token', result.token);
+        console.log('Token guardado:', result.token);
+      }
+      
+      // ✅ GUARDAR EMAIL
+      localStorage.setItem('userEmail', this.email);
+      console.log('Email guardado:', this.email);
+      
+      // ✅ GUARDAR ID - VERIFICACIÓN MEJORADA
+      if (result.id) {
+        localStorage.setItem('id', result.id.toString()); // Asegurar que sea string
+        console.log('ID guardado:', result.id);
+      } else {
+        console.error('⚠️ ADVERTENCIA: No se recibió ID del usuario desde el backend');
+        await this.showAlert('Advertencia', 'No se pudo obtener el ID del usuario. Algunas funciones podrían no funcionar correctamente.');
+      }
+      
+      // ✅ VERIFICAR QUE SE GUARDÓ CORRECTAMENTE
+      const savedId = localStorage.getItem('id');
+      console.log('Verificación - ID guardado en localStorage:', savedId);
+      
       this.router.navigate(['/tabs/home']);
     } else {
       await this.showAlert('Error de autenticación', result.message || 'Credenciales incorrectas');
@@ -74,7 +111,6 @@ export class LoginPage {
     await loading.dismiss();
   }
 }
-
   // Validar formulario
   private validateForm(): boolean {
     if (!this.email || !this.password) {
@@ -83,7 +119,7 @@ export class LoginPage {
     }
 
     if (!this.isValidEmail(this.email)) {
-      this.showToast('Por favor, ingresa un email válido', 'warning');
+      this.showToast('Por favor, ingresa credenciales válidas', 'warning');
       return false;
     }
 
@@ -151,7 +187,7 @@ export class LoginPage {
          await this.showToast('Instrucciones enviadas a tu email', 'success');
          return true; // <- Añadido
          } else {
-         await this.showToast('Por favor, ingresa un email válido', 'warning');
+         await this.showToast('Por favor, ingresa credenciales válidas', 'warning');
          return false;
          }
          }
@@ -164,7 +200,7 @@ export class LoginPage {
 
   // Ir a registro
   goToSignup() {
-    this.router.navigate(['/signup']);
+    this.router.navigate(['/registro']);
   }
 
   // Login con Google

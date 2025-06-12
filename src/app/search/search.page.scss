@@ -1,12 +1,217 @@
-.movies-horizontal {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-  justify-content: center;
-  padding: 16px;
+// Estilos para el header personalizado
+.custom-header {
+  ion-toolbar.custom-toolbar {
+  --background: #000 !important;
+  background: #000 !important;
 }
 
-ion-card {
-  width: 420px;
-  cursor: pointer;
+ion-toolbar.custom-toolbar {
+  --ion-background-color: #000 !important;
+  --ion-color-base: #000 !important;
+  background: #000 !important;
+}
+  .custom-toolbar {
+       --background: #000 !important;
+    --border-color: rgba(59, 130, 246, 0.2);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    width: 100%;
+    
+    .app-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      .logo-icon {
+        font-size: 28px;
+        color: #3b82f6;
+        filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+      }
+      
+      .app-info {
+        display: flex;
+        flex-direction: column;
+        
+        .app-name {
+          font-size: 20px;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: -0.5px;
+          background: linear-gradient(45deg, #4e4e60, #5f82ad);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+    }
+
+  }
+}
+
+.movies-horizontal {
+  padding: 16px;
+  
+  ion-card {
+    margin-bottom: 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
+    &.clickable {
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+    }
+    
+    img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 12px 12px 0 0;
+    }
+    
+    ion-card-header {
+      padding: 16px;
+      
+      ion-card-title {
+        font-size: 1.2rem;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: var(--ion-color-primary);
+      }
+      
+      ion-card-subtitle {
+        color: var(--ion-color-medium);
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+        
+        ion-icon {
+          margin-right: 4px;
+          vertical-align: middle;
+        }
+      }
+    }
+    
+    ion-card-content {
+      padding: 0 16px 16px;
+      color: var(--ion-color-dark);
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+}
+
+ion-segment {
+  margin: 16px;
+  
+  ion-segment-button {
+    --color: var(--ion-color-medium);
+    --color-checked: var(--ion-color-primary);
+    --border-color: var(--ion-color-light);
+    
+    ion-icon {
+      margin-bottom: 4px;
+    }
+    
+    ion-label {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+.info-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60vh;
+  
+  p {
+    text-align: center;
+    
+    ion-icon {
+      display: block;
+      margin: 0 auto 16px;
+      color: var(--ion-color-medium);
+    }
+  }
+}
+
+// Responsive design
+@media (min-width: 768px) {
+  .movies-horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    
+    ion-card {
+      margin-bottom: 0;
+    }
+  }
+}
+// Agregar estos estilos a tu search.page.scss existente
+
+.genre-selector {
+  padding: 16px;
+  
+  ion-select {
+    --background: var(--ion-color-light);
+    --border-radius: 8px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 8px;
+    
+    &::part(text) {
+      color: var(--ion-color-dark);
+      font-weight: 500;
+    }
+    
+    &::part(icon) {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+// Mejorar el estilo de las cards de películas
+.movies-horizontal {
+  ion-card {
+    ion-card-subtitle {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 8px;
+      
+      ion-icon {
+        margin-right: 4px;
+      }
+    }
+  }
+}
+
+.no-results {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  
+  p {
+    font-style: italic;
+  }
 }

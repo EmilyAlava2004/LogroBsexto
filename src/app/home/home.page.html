@@ -1,6 +1,14 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>CineApp</ion-title>
+<ion-header [translucent]="true" class="custom-header">
+  <ion-toolbar color="dark" class="custom-toolbar">
+    <div class="header-content">
+      <div class="app-logo">
+        <ion-icon name="film" class="logo-icon"></ion-icon>
+        <div class="app-info">
+          <span class="app-name">CineApp</span>
+          <span class="user-greeting">Hola, {{username}}</span>
+        </div>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
 

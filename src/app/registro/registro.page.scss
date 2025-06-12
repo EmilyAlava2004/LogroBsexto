@@ -1,0 +1,347 @@
+/* signup.page.scss */
+
+.signup-content {
+  --background: linear-gradient(135deg, #171718 0%, #343336 100%);
+  --padding-start: 20px;
+  --padding-end: 20px;
+}
+
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* Header Section */
+.header-section {
+  text-align: center;
+  margin-bottom: 30px;
+  
+  .logo-icon {
+    font-size: 70px;
+    color: #ffffff;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  }
+  
+  h1 {
+    color: #ffffff;
+    font-size: 26px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 15px;
+    margin: 0;
+  }
+}
+
+/* Form Styles */
+.signup-form {
+  margin-bottom: 25px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+  
+  .custom-input {
+    --background: rgba(57, 56, 56, 0.95);
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --min-height: 52px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    
+    ion-input {
+      --placeholder-color: #ede9e9;
+      --color: #f6f4f4;
+      font-size: 15px;
+    }
+    
+    .input-icon {
+      color: #b2b3b3;
+      margin-right: 12px;
+      font-size: 18px;
+    }
+    
+    .toggle-password {
+      color: #ece8e8;
+      cursor: pointer;
+      font-size: 18px;
+      
+      &:hover {
+        color: #ece8e8;
+      }
+    }
+  }
+}
+
+/* Terms Section */
+.terms-section {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 25px;
+  
+  ion-checkbox {
+    --size: 18px;
+    --checkmark-color: #ffffff;
+    --background-checked: #667eea;
+    --border-color-checked: #667eea;
+    margin-right: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  
+  ion-label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    line-height: 1.4;
+    
+    .terms-link {
+      color: #667eea;
+      text-decoration: underline;
+      cursor: pointer;
+      
+      &:hover {
+        color: #5a6fd8;
+      }
+    }
+  }
+}
+
+/* Signup Button */
+.signup-button {
+  --background: linear-gradient(45deg, #667eea, #764ba2);
+  --background-activated: linear-gradient(45deg, #5a6fd8, #6a4190);
+  --border-radius: 12px;
+  --box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+  --color: #ffffff;
+  height: 52px;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  margin-bottom: 20px;
+  
+  &:hover {
+    --box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+  }
+  
+  &[disabled] {
+    --background: rgba(255, 255, 255, 0.3);
+    --color: rgba(255, 255, 255, 0.6);
+    --box-shadow: none;
+  }
+}
+
+/* Additional Links */
+.additional-links {
+  text-align: center;
+  margin-bottom: 25px;
+  
+  .login-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    span {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 14px;
+      margin-right: 5px;
+    }
+    
+    ion-button {
+      --color: #667eea;
+      font-size: 14px;
+      text-transform: none;
+      font-weight: 500;
+      
+      &:hover {
+        --color: #5a6fd8;
+      }
+    }
+  }
+}
+
+/* Divider 
+.divider {
+  position: relative;
+  text-align: center;
+  margin: 25px 0;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.3);
+  }
+  
+  span {
+    background: transparent;
+    padding: 0 20px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+  }
+}
+*/
+/* Social Buttons 
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
+  .social-btn {
+    --border-radius: 12px;
+    --border-width: 2px;
+    --color: #ffffff;
+    height: 46px;
+    font-size: 15px;
+    font-weight: 500;
+    text-transform: none;
+    
+    &.google-btn {
+      --border-color: rgba(219, 68, 55, 0.8);
+      --background: rgba(219, 68, 55, 0.1);
+      
+      &:hover {
+        --background: rgba(219, 68, 55, 0.2);
+      }
+    }
+    
+    &.facebook-btn {
+      --border-color: rgba(66, 103, 178, 0.8);
+      --background: rgba(66, 103, 178, 0.1);
+      
+      &:hover {
+        --background: rgba(66, 103, 178, 0.2);
+      }
+    }
+  }
+}*/
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .signup-container {
+    padding: 15px;
+  }
+  
+  .header-section {
+    margin-bottom: 25px;
+    
+    .logo-icon {
+      font-size: 60px;
+    }
+    
+    h1 {
+      font-size: 24px;
+    }
+  }
+  
+  .input-group {
+    margin-bottom: 14px;
+    
+    .custom-input {
+      --min-height: 50px;
+    }
+  }
+}
+
+@media (max-height: 700px) {
+  .signup-container {
+    justify-content: flex-start;
+    padding-top: 30px;
+  }
+  
+  .header-section {
+    margin-bottom: 20px;
+    
+    .logo-icon {
+      font-size: 50px;
+      margin-bottom: 10px;
+    }
+  }
+  
+  .input-group {
+    margin-bottom: 12px;
+  }
+  
+  .terms-section {
+    margin-bottom: 20px;
+  }
+  
+  .divider {
+    margin: 20px 0;
+  }
+}
+
+/* Animation Classes */
+.signup-container {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Success State */
+.success-message {
+  background: rgba(46, 160, 67, 0.1);
+  border: 1px solid rgba(46, 160, 67, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
+  
+  .success-text {
+    color: #2ea043;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    
+    ion-icon {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+  }
+}
+
+/* Loading State */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  
+  ion-spinner {
+    --color: #ffffff;
+    width: 50px;
+    height: 50px;
+  }
+}

@@ -36,7 +36,7 @@ import {
   calendar, 
   time, 
   play,
-  heart,
+  sparklesOutline,
   heartOutline,
   trendingUp,
   trophy,
@@ -118,7 +118,7 @@ export class PremierePage implements OnInit {
       calendar,
       time,
       play,
-      heart,
+      sparklesOutline,
       heartOutline,
       trendingUp,
       trophy,
@@ -136,17 +136,17 @@ export class PremierePage implements OnInit {
       let response: any;
       
       switch (this.selectedSegment) {
-        case 'popular':
-          response = await this.moviesService.getMoviespopular().toPromise();
+        case 'Cartelera':
+          response = await this.moviesService.getCartelera().toPromise();
           break;
         case 'top_rated':
           response = await this.moviesService.getTopRatedMovies().toPromise();
           break;
-        case 'favorites':
-          response = await this.moviesService.getMoviesFavorites().toPromise();
+        case 'estrenos':
+          response = await this.moviesService.getEstrenos().toPromise();
           break;
         default:
-          response = await this.moviesService.getMoviespopular().toPromise();
+          response = await this.moviesService.getCartelera().toPromise();
       }
       
       this.movies = response.results;

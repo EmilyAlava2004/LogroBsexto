@@ -1,36 +1,146 @@
+<!-- HTML Template -->
 <ion-content class="custom-content" [fullscreen]="true">
-  <div class="header-image" *ngIf="movie?.backdrop_path">
-    <img [src]="'https://image.tmdb.org/t/p/w780' + movie.backdrop_path" alt="Backdrop" />
-    <ion-button fill="clear" class="back-button" routerLink="/home">
-      <ion-icon name="arrow-back-outline"></ion-icon>
+  <!-- Header con imagen de fondo y gradiente -->
+  <div class="header-section" *ngIf="movie?.backdrop_path">
+    <div class="backdrop-container">
+      <img [src]="'https://image.tmdb.org/t/p/w780' + movie.backdrop_path" alt="Backdrop" class="backdrop-image" />
+      <div class="backdrop-overlay"></div>
+    </div>
+    
+    <!-- Botón de regreso flotante -->
+    <ion-button fill="clear" class="back-button" routerLink="/tabs/home">
+      <ion-icon name="chevron-back-outline" ></ion-icon>
     </ion-button>
-  </div>
 
-  <div class="content-body" *ngIf="movie">
-    <h1 class="title">{{ movie.original_title }}</h1>
-    <p class="subtitle">{{ movie.release_date }} · {{ movie.runtime }} min</p>
-
-    <p class="overview">{{ movie.overview }}</p>
-
-    <div class="info-section">
-      <h2>🎬 Géneros</h2>
-      <div class="info-tags">
-        <span *ngFor="let g of movie.genres">{{ g.name }}</span>
+    <!-- Información principal sobre la imagen -->
+    <div class="hero-content" *ngIf="movie">
+      <div class="poster-title-section">
+        <div class="poster-container" *ngIf="movie.poster_path">
+          <img [src]="'https://image.tmdb.org/t/p/w300' + movie.poster_path" alt="Poster" class="poster-image" />
+        </div>
+        <div class="title-info">
+          <h1 class="movie-title">{{ movie.original_title }}</h1>
+          <div class="movie-meta">
+            <span class="release-year">{{ movie.release_date | date:'yyyy' }}</span>
+            <span class="separator">•</span>
+            <span class="runtime">{{ movie.runtime }} min</span>
+            <span class="separator">•</span>
+            <div class="rating" *ngIf="movie.vote_average">
+              <ion-icon name="star" class="star-icon"></ion-icon>
+              <span>{{ movie.vote_average | number:'1.1-1' }}</span>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <h2>🗣️ Idiomas</h2>
-      <div class="info-tags">
-        <span *ngFor="let lang of movie.spoken_languages">{{ lang.english_name }}</span>
-      </div>
-
-      <h2>💰 Presupuesto</h2>
-      <p>${{ movie.budget | number }}</p>
-
-      <h2>💵 Ingresos</h2>
-      <p>${{ movie.revenue | number }}</p>
-
-      <h2>🌐 Página oficial</h2>
-      <a *ngIf="movie.homepage" [href]="movie.homepage" target="_blank">{{ movie.homepage }}</a>
     </div>
   </div>
+
+  <!-- Contenido principal -->
+  <div class="main-content" *ngIf="movie">
+    <!-- Sinopsis -->
+    <div class="section overview-section">
+      <h2 class="section-title">Sinopsis</h2>
+      <p class="overview-text">{{ movie.overview }}</p>
+    </div>
+
+    <!-- Información en cards -->
+    <div class="info-grid">
+      <!-- Géneros -->
+      <div class="info-card">
+        <div class="card-header">
+          <ion-icon name="film-outline" class="card-icon"></ion-icon>
+          <h3>Géneros</h3>
+        </div>
+        <div class="genre-tags">
+          <span class="genre-tag" *ngFor="let g of movie.genres">{{ g.name }}</span>
+        </div>
+      </div>
+
+      <!-- Idiomas -->
+      <div class="info-card">
+        <div class="card-header">
+          <ion-icon name="language-outline" class="card-icon"></ion-icon>
+          <h3>Idiomas</h3>
+        </div>
+        <div class="language-tags">
+          <span class="language-tag" *ngFor="let lang of movie.spoken_languages">{{ lang.english_name }}</span>
+        </div>
+      </div>
+
+      <!-- Información financiera -->
+      <div class="info-card financial-info">
+        <div class="card-header">
+          <ion-icon name="cash-outline" class="card-icon"></ion-icon>
+          <h3>Información Financiera</h3>
+        </div>
+        <div class="financial-grid">
+          <div class="financial-item">
+            <span class="label">Presupuesto</span>
+            <span class="value">${{ movie.budget | number }}</span>
+          </div>
+          <div class="financial-item">
+            <span class="label">Ingresos</span>
+            <span class="value">${{ movie.revenue | number }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Página oficial -->
+      <div class="info-card" *ngIf="movie.homepage">
+        <div class="card-header">
+          <ion-icon name="globe-outline" class="card-icon"></ion-icon>
+          <h3>Página Oficial</h3>
+        </div>
+        <a [href]="movie.homepage" target="_blank" class="official-link">
+          <span>Visitar sitio web</span>
+          <ion-icon name="open-outline"></ion-icon>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sección de comentarios mejorada -->
+    <div class="comments-section">
+      <div class="section-header">
+        <h2 class="section-title">Comentarios</h2>
+        <ion-button fill="clear" class="add-comment-btn" (click)="getstateComment()">
+          <ion-icon name="add-circle-outline" slot="start" ></ion-icon>
+          Agregar
+        </ion-button>
+      </div>
+      @if (stateComent) {
+        <div class="comment-input-container">
+        <div class="comment-input-wrapper">
+          <ion-item class="comment-item" lines="none">
+            <ion-avatar slot="start" class="user-avatar">
+              <ion-icon name="person-outline"></ion-icon>
+            </ion-avatar>
+            <ion-input 
+               placeholder="Escribe tu comentario..." 
+               type="text" 
+               class="comment-input"
+               fill="outline"
+               [(ngModel)]="userComment">
+            </ion-input>
+            <ion-button fill="clear" slot="end" class="send-button" (click)="saveComment()">
+              <ion-icon name="send-outline"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+      </div>
+      }
+      
+    </div>
+  </div>
+    <ion-list [inset]="true">
+      @for (item of comments; track $index) {
+        <ion-item [button]="true" detail="false">
+      <div class="unread-indicator-wrapper" slot="start"></div>
+      <ion-label>
+        <strong>{{ item.user.user}}</strong>    |
+        <ion-text>{{item.user.email}}</ion-text><br />
+        <ion-note color="medium" class="ion-text-wrap">{{item.description}}</ion-note>
+      </ion-label>
+    </ion-item>
+    }
+  </ion-list>
 </ion-content>

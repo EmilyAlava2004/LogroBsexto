@@ -1,3 +1,50 @@
+// Estilos para el header personalizado
+.custom-header {
+  .custom-toolbar {
+    --background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+    --border-color: rgba(59, 130, 246, 0.2);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    width: 100%;
+    
+    .app-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      
+      .logo-icon {
+        font-size: 28px;
+        color: #3b82f6;
+        filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+      }
+      
+      .app-info {
+        display: flex;
+        flex-direction: column;
+        
+        .app-name {
+          font-size: 20px;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: -0.5px;
+          background: linear-gradient(45deg, #4e4e60, #5f82ad);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+      }
+    }
+  }
+}
 
 .header-content {
   padding: 16px;

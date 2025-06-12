@@ -1,31 +1,115 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>Buscar</ion-title>
+<ion-header [translucent]="true" class="custom-header">
+  <ion-toolbar color="dark" class="custom-toolbar">
+    <div class="header-content">
+      <div class="app-logo">
+        <ion-icon name="film" class="logo-icon"></ion-icon>
+        <div class="app-info">
+          <span class="app-name">CineApp</span>
+        </div>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-toolbar>
+  <!-- Barra de búsqueda - solo visible si no estamos en modo género -->
+  <ion-toolbar *ngIf="searchType !== 'genres'">
     <ion-searchbar
       [(ngModel)]="searchTerm"
       (ionChange)="searchMovies()"
-      placeholder="Buscar película">
+      placeholder="Buscar película o actor">
     </ion-searchbar>
   </ion-toolbar>
 
+  <!-- Selector de tipo de búsqueda -->
+  <ion-segment value="movies" (ionChange)="onSearchTypeChange($event)">
+    <ion-segment-button value="movies">
+      <ion-icon name="film"></ion-icon>
+      <ion-label>Películas</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="actors">
+      <ion-icon name="person"></ion-icon>
+      <ion-label>Actores</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="genres">
+      <ion-icon name="list-outline"></ion-icon>
+      <ion-label>Géneros</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="multi">
+      <ion-icon name="search"></ion-icon>
+      <ion-label>Todo</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- Selector de género - solo visible en modo género -->
+  <div *ngIf="searchType === 'genres'" class="genre-selector">
+    <ion-select
+      [(ngModel)]="selectedGenre"
+      (ionChange)="onGenreChange($event)"
+      placeholder="Selecciona un género"
+      interface="popover">
+      <ion-select-option 
+        *ngFor="let genre of genres" 
+        [value]="genre.id">
+        {{ genre.name }}
+      </ion-select-option>
+    </ion-select>
+  </div>
+
   <div class="movies-horizontal" *ngIf="searchResults.length > 0">
-    <ion-card *ngFor="let item of searchResults" [routerLink]="['/detalles', item.id]">
-      <img alt="{{item.title}}" [src]="item.poster_path ? 'https://image.tmdb.org/t/p/w500' + item.poster_path : 'assets/img/images.jpeg'" />
+    <ion-card 
+      *ngFor="let item of searchResults; trackBy: trackByIndex"
+      [routerLink]="canNavigateToDetails(item) ? ['/detalles', item.id] : null"
+      [class.clickable]="canNavigateToDetails(item)">
+      
+      <img
+        [alt]="getTitle(item)"
+        [src]="getImageUrl(item)" />
+      
       <ion-card-header>
-        <ion-card-title>{{item.title}}</ion-card-title>
-        <ion-card-subtitle>{{item.release_date}}</ion-card-subtitle>
+        <ion-card-title>{{ getTitle(item) }}</ion-card-title>
+        <ion-card-subtitle>{{ getSubtitle(item) }}</ion-card-subtitle>
+        
+        <!-- Mostrar tipo de resultado -->
+        <ion-card-subtitle *ngIf="searchType === 'multi'">
+          <ion-icon 
+            [name]="item.type === 'person' ? 'person' : 'film'"
+            size="small">
+          </ion-icon>
+          {{ item.type === 'person' ? 'Actor' : 'Película' }}
+        </ion-card-subtitle>
+
+        <!-- Mostrar puntuación para películas -->
+        <ion-card-subtitle *ngIf="item.vote_average && item.type === 'movie'">
+          ⭐ {{ item.vote_average.toFixed(1) }}/10
+        </ion-card-subtitle>
       </ion-card-header>
+      
       <ion-card-content>
-        {{item.overview}}
+        {{ item.overview || item.biography || 'Sin descripción disponible' }}
       </ion-card-content>
     </ion-card>
   </div>
-  <div *ngIf="searchResults.length === 0 && searchTerm">
-    <p style="text-align:center; color: #888;">No se encontraron resultados.</p>
+
+  <!-- Mensaje cuando no hay resultados -->
+  <div *ngIf="searchResults.length === 0 && (searchTerm || selectedGenre)" class="no-results">
+    <p style="text-align:center; color: #888;">
+      No se encontraron resultados
+      <span *ngIf="searchType === 'actors'"> para el actor "{{ searchTerm }}"</span>
+      <span *ngIf="searchType === 'movies'"> para "{{ searchTerm }}"</span>
+      <span *ngIf="searchType === 'genres'"> para el género seleccionado</span>
+      <span *ngIf="searchType === 'multi'"> para "{{ searchTerm }}"</span>
+    </p>
+  </div>
+
+  <!-- Mensaje informativo cuando no hay término de búsqueda ni género seleccionado -->
+  <div *ngIf="!searchTerm && !selectedGenre" class="info-message">
+    <p style="text-align:center; color: #888; margin-top: 50px;">
+      <ion-icon [name]="searchType === 'genres' ? 'list-outline' : 'search'" size="large"></ion-icon><br>
+      <span *ngIf="searchType === 'movies'">Ingresa un término para buscar películas</span>
+      <span *ngIf="searchType === 'actors'">Ingresa un nombre para buscar actores</span>
+      <span *ngIf="searchType === 'genres'">Selecciona un género para ver películas</span>
+      <span *ngIf="searchType === 'multi'">Ingresa un término para buscar películas y actores</span>
+    </p>
   </div>
 </ion-content>
