@@ -189,9 +189,23 @@ export class RegistroPage  {
     await alert.present();
   }
 
-  goToLogin() {
-  document.activeElement && (document.activeElement as HTMLElement).blur(); 
+  // Reemplaza tu método goToLogin actual con:
+goToLogin() {
+  this.clearFocus();
   this.router.navigate(['/login']);
+}
+
+// Método para navegar después del registro exitoso
+private navigateToHome() {
+  this.clearFocus();
+  this.router.navigate(['/tabs/home']);
+}
+
+// Método auxiliar para limpiar el foco
+private clearFocus() {
+  if (document.activeElement && document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
 }
 
   async signupWithGoogle() {

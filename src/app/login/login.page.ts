@@ -198,10 +198,25 @@ async onLogin() {
     await alert.present();
   }
 
-  // Ir a registro
   goToSignup() {
-  document.activeElement && (document.activeElement as HTMLElement).blur(); 
+  // Quitar el foco antes de navegar
+  this.clearFocus();
+  
+  // Usar NavController en lugar de Router para mejor manejo de Ionic
   this.router.navigate(['/registro']);
+}
+
+// Método para manejar el foco después del login exitoso
+private navigateToHome() {
+  this.clearFocus();
+  this.router.navigate(['/tabs/home']);
+}
+
+// Método auxiliar para limpiar el foco
+private clearFocus() {
+  if (document.activeElement && document.activeElement instanceof HTMLElement) {
+    document.activeElement.blur();
+  }
 }
 
 

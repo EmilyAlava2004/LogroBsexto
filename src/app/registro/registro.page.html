@@ -1,30 +1,29 @@
-<!-- signup.page.html -->
-<ion-content class="signup-content">
-  <div class="signup-container">
-    <!-- Header con logo o título -->
+<!-- registro.page.html -->
+<ion-content class="registro-content">
+  <div class="registro-container">
+    <!-- Header -->
     <div class="header-section">
       <ion-icon name="person-add-outline" class="logo-icon"></ion-icon>
       <h1>Crear Cuenta</h1>
-      <p>Únete a nuestra comunidad de películas</p>
+      <p>Regístrate para comenzar</p>
     </div>
 
     <!-- Formulario de registro -->
-    <form class="signup-form" (ngSubmit)="onSignup()">
-      <!-- Campo Nombre -->
+    <form class="registro-form" (ngSubmit)="onSignup()">
       <div class="input-group">
         <ion-item lines="none" class="custom-input">
           <ion-icon name="person-outline" slot="start" class="input-icon"></ion-icon>
           <ion-input
             type="text"
-            placeholder="Nombre completo"
+            placeholder="Nombre de usuario"
             [(ngModel)]="user"
-            name="nombre"
-            required>
+            name="user"
+            required
+            autocomplete="username">
           </ion-input>
         </ion-item>
       </div>
 
-      <!-- Campo Email -->
       <div class="input-group">
         <ion-item lines="none" class="custom-input">
           <ion-icon name="mail-outline" slot="start" class="input-icon"></ion-icon>
@@ -33,12 +32,12 @@
             placeholder="Correo electrónico"
             [(ngModel)]="email"
             name="email"
-            required>
+            required
+            autocomplete="email">
           </ion-input>
         </ion-item>
       </div>
 
-      <!-- Campo Contraseña -->
       <div class="input-group">
         <ion-item lines="none" class="custom-input">
           <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
@@ -48,18 +47,21 @@
             placeholder="Contraseña"
             [(ngModel)]="password"
             name="password"
-            required>
+            required
+            autocomplete="new-password">
           </ion-input>
           <ion-icon 
-            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"
-            slot="end"
+            [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" 
+            slot="end" 
             class="toggle-password"
-            (click)="togglePassword()">
+            (click)="togglePassword()"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
           </ion-icon>
         </ion-item>
       </div>
 
-      <!-- Campo Confirmar Contraseña -->
       <div class="input-group">
         <ion-item lines="none" class="custom-input">
           <ion-icon name="lock-closed-outline" slot="start" class="input-icon"></ion-icon>
@@ -69,34 +71,46 @@
             placeholder="Confirmar contraseña"
             [(ngModel)]="confirmPassword"
             name="confirmPassword"
-            required>
+            required
+            autocomplete="new-password">
           </ion-input>
           <ion-icon 
-            [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'"
-            slot="end"
+            [name]="showConfirmPassword ? 'eye-off-outline' : 'eye-outline'" 
+            slot="end" 
             class="toggle-password"
-            (click)="toggleConfirmPassword()">
+            (click)="toggleConfirmPassword()"
+            role="button"
+            tabindex="0"
+            [attr.aria-label]="showConfirmPassword ? 'Ocultar confirmación de contraseña' : 'Mostrar confirmación de contraseña'">
           </ion-icon>
         </ion-item>
       </div>
 
-      <!-- Términos y condiciones -->
       <div class="terms-section">
-        <ion-checkbox [(ngModel)]="acceptTerms" name="acceptTerms"></ion-checkbox>
+        <ion-checkbox 
+          [(ngModel)]="acceptTerms" 
+          name="acceptTerms"
+          aria-label="Aceptar términos y condiciones">
+        </ion-checkbox>
         <ion-label>
           Acepto los 
-          <span class="terms-link" (click)="showTermsAndConditions()">
+          <ion-button 
+            fill="clear" 
+            size="small" 
+            (click)="showTermsAndConditions()"
+            aria-label="Ver términos y condiciones">
             términos y condiciones
-          </span>
+          </ion-button>
         </ion-label>
       </div>
 
       <!-- Botón de registro -->
       <ion-button 
-        expand="block"
-        type="submit"
-        class="signup-button"
-        [disabled]="!user || !email || !password || !confirmPassword || !acceptTerms">
+        expand="block" 
+        type="submit" 
+        class="registro-button"
+        [disabled]="!user || !email || !password || !confirmPassword || !acceptTerms"
+        aria-label="Crear cuenta nueva">
         <ion-icon name="person-add-outline" slot="start"></ion-icon>
         Crear Cuenta
       </ion-button>
@@ -106,28 +120,38 @@
     <div class="additional-links">
       <div class="login-section">
         <span>¿Ya tienes cuenta? </span>
-        <ion-button fill="clear" size="small" (click)="goToLogin()">
-          Inicia Sesión
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          (click)="goToLogin()"
+          aria-label="Ir a página de inicio de sesión">
+          Iniciar Sesión
         </ion-button>
       </div>
     </div>
 
-    <!-- Divisor 
     <div class="divider">
       <span>o regístrate con</span>
     </div>
--->
-    <!-- Botones de redes sociales 
+
     <div class="social-buttons">
-      <ion-button fill="outline" class="social-btn google-btn" (click)="signupWithGoogle()">
+      <ion-button 
+        fill="outline" 
+        class="social-btn google-btn" 
+        (click)="signupWithGoogle()"
+        aria-label="Registrarse con Google">
         <ion-icon name="logo-google" slot="start"></ion-icon>
         Google
       </ion-button>
       
-      <ion-button fill="outline" class="social-btn facebook-btn" (click)="signupWithFacebook()">
+      <ion-button 
+        fill="outline" 
+        class="social-btn facebook-btn" 
+        (click)="signupWithFacebook()"
+        aria-label="Registrarse con Facebook">
         <ion-icon name="logo-facebook" slot="start"></ion-icon>
         Facebook
       </ion-button>
-    </div>-->
+    </div>
   </div>
 </ion-content>
