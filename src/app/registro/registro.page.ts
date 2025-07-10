@@ -190,8 +190,9 @@ export class RegistroPage  {
   }
 
   goToLogin() {
-    this.router.navigate(['/login']);
-  }
+  document.activeElement && (document.activeElement as HTMLElement).blur(); 
+  this.router.navigate(['/login']);
+}
 
   async signupWithGoogle() {
     const loading = await this.loadingController.create({

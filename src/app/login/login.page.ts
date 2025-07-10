@@ -200,8 +200,10 @@ async onLogin() {
 
   // Ir a registro
   goToSignup() {
-    this.router.navigate(['/registro']);
-  }
+  document.activeElement && (document.activeElement as HTMLElement).blur(); 
+  this.router.navigate(['/registro']);
+}
+
 
   // Login con Google
   async loginWithGoogle() {
