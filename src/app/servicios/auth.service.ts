@@ -26,7 +26,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private API_URL = 'http://localhost:3000/api';
+  private API_URL = 'https://baselogrob-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 
